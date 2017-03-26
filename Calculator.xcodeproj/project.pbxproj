@@ -13,6 +13,8 @@
 		F0A097A21E87AB6F00031E72 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0A097A01E87AB6F00031E72 /* Main.storyboard */; };
 		F0A097A41E87AB6F00031E72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0A097A31E87AB6F00031E72 /* Assets.xcassets */; };
 		F0A097A71E87AB6F00031E72 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0A097A51E87AB6F00031E72 /* LaunchScreen.storyboard */; };
+		F0A097B41E87AC9E00031E72 /* Calculator.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A097B31E87AC9E00031E72 /* Calculator.m */; };
+		F0A097B81E87B55200031E72 /* Button.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A097B71E87B55200031E72 /* Button.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,10 @@
 		F0A097A31E87AB6F00031E72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F0A097A61E87AB6F00031E72 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F0A097A81E87AB6F00031E72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0A097B21E87AC9E00031E72 /* Calculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calculator.h; sourceTree = "<group>"; };
+		F0A097B31E87AC9E00031E72 /* Calculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Calculator.m; sourceTree = "<group>"; };
+		F0A097B61E87B55200031E72 /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
+		F0A097B71E87B55200031E72 /* Button.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Button.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,12 +66,10 @@
 			children = (
 				F0A0979A1E87AB6F00031E72 /* AppDelegate.h */,
 				F0A0979B1E87AB6F00031E72 /* AppDelegate.m */,
-				F0A0979D1E87AB6F00031E72 /* ViewController.h */,
-				F0A0979E1E87AB6F00031E72 /* ViewController.m */,
-				F0A097A01E87AB6F00031E72 /* Main.storyboard */,
-				F0A097A31E87AB6F00031E72 /* Assets.xcassets */,
-				F0A097A51E87AB6F00031E72 /* LaunchScreen.storyboard */,
-				F0A097A81E87AB6F00031E72 /* Info.plist */,
+				F0A097B01E87AC4800031E72 /* Models */,
+				F0A097B11E87AC5000031E72 /* Controllers */,
+				F0A097B51E87B53E00031E72 /* Views */,
+				F0A097AF1E87AC0100031E72 /* Storyboards */,
 				F0A097971E87AB6F00031E72 /* Supporting Files */,
 			);
 			path = Calculator;
@@ -75,8 +79,46 @@
 			isa = PBXGroup;
 			children = (
 				F0A097981E87AB6F00031E72 /* main.m */,
+				F0A097A81E87AB6F00031E72 /* Info.plist */,
+				F0A097A51E87AB6F00031E72 /* LaunchScreen.storyboard */,
+				F0A097A31E87AB6F00031E72 /* Assets.xcassets */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F0A097AF1E87AC0100031E72 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				F0A097A01E87AB6F00031E72 /* Main.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		F0A097B01E87AC4800031E72 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F0A097B21E87AC9E00031E72 /* Calculator.h */,
+				F0A097B31E87AC9E00031E72 /* Calculator.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		F0A097B11E87AC5000031E72 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F0A0979D1E87AB6F00031E72 /* ViewController.h */,
+				F0A0979E1E87AB6F00031E72 /* ViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		F0A097B51E87B53E00031E72 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F0A097B61E87B55200031E72 /* Button.h */,
+				F0A097B71E87B55200031E72 /* Button.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -89,6 +131,7 @@
 				F0A097901E87AB6F00031E72 /* Sources */,
 				F0A097911E87AB6F00031E72 /* Frameworks */,
 				F0A097921E87AB6F00031E72 /* Resources */,
+				F0A097AE1E87ABA200031E72 /* Increase Build Number */,
 			);
 			buildRules = (
 			);
@@ -146,12 +189,31 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		F0A097AE1E87ABA200031E72 /* Increase Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Increase Build Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F0A097901E87AB6F00031E72 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				F0A0979F1E87AB6F00031E72 /* ViewController.m in Sources */,
+				F0A097B41E87AC9E00031E72 /* Calculator.m in Sources */,
+				F0A097B81E87B55200031E72 /* Button.m in Sources */,
 				F0A0979C1E87AB6F00031E72 /* AppDelegate.m in Sources */,
 				F0A097991E87AB6F00031E72 /* main.m in Sources */,
 			);

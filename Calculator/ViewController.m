@@ -7,23 +7,39 @@
 //
 
 #import "ViewController.h"
-
-@interface ViewController ()
-
-@end
+#import "Calculator.h"
 
 @implementation ViewController
 
+# pragma mark - Lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    [self setCalculator:[[Calculator alloc] init]];
+    
+    [self update];
 }
 
+# pragma mark - Actions
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)input:(id)sender {
+    [self.calculator input:[sender valueForKeyPath:@"identifier"]];
+    [self update];
 }
 
+# pragma mark - Methods
+
+- (void)update {
+    NSDecimalNumber *amount = [self.calculator amount];
+    
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [formatter setMinimumFractionDigits:0];
+    [formatter setMaximumFractionDigits:10];
+    
+    [self.amountLabel setText:[formatter stringFromNumber:amount]];
+    [self.clearButton setTitle:[self.calculator clearLabel] forState:UIControlStateNormal];
+}
 
 @end

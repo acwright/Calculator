@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class Calculator;
+
 @interface ViewController : UIViewController
 
+@property (nonatomic, weak) IBOutlet UILabel *amountLabel;
+@property (nonatomic, weak) IBOutlet UIButton *clearButton;
+
+@property (nonatomic, strong) Calculator *calculator;
+
+- (IBAction)input:(id)sender;
 
 @end
-
