@@ -28,7 +28,8 @@
         [self setXAmount:[[NSDecimalNumber alloc] initWithInteger:0]];
         [self setYAmount:[[NSDecimalNumber alloc] initWithInteger:0]];
         [self setStringAmount:nil];
-        [self setOperation:CashRegisterCalculatorOperationNone];
+        [self setPreviousOperation:CashRegisterCalculatorOperationNone];
+        [self setCurrentOperation:CashRegisterCalculatorOperationNone];
     }
     return self;
 }
@@ -43,12 +44,12 @@
     return self.xAmount;
 }
 
-# pragma mark - Actions
+# pragma mark - Methods
 
 - (void)input:(NSString *)value {
     if ([[[self class] operations] containsObject:value]) {
         if ([value isEqualToString:@"Clear"]) {
-            [self clear];
+            [self clearAll];
         } else if ([value isEqualToString:@"Invert"]) {
             [self invert];
         } else if ([value isEqualToString:@"Percent"]) {
@@ -62,55 +63,13 @@
         } else if ([value isEqualToString:@"Add"]) {
             [self add];
         } else if ([value isEqualToString:@"Equal"]) {
-            [self calculate];
+            [self equal];
         }
     } else if ([[[self class] operands] containsObject:value]) {
         [self concatenate:value];
     } else {
         NSLog(@"Invalid Input: %@", value);
     }
-}
-
-- (void)clear {
-    [self _clearAll];
-}
-
-- (void)invert {
-    [self _invert];
-}
-
-- (void)percent {
-    [self _percent];
-}
-
-- (void)divide {
-    [self _calculate];
-    [self setOperation:CashRegisterCalculatorOperationDivide];
-    [self setStringAmount:nil];
-}
-
-- (void)multiply {
-    [self _calculate];
-    [self setOperation:CashRegisterCalculatorOperationMultiply];
-    [self setStringAmount:nil];
-}
-
-- (void)add {
-    [self _calculate];
-    [self setOperation:CashRegisterCalculatorOperationAdd];
-    [self setStringAmount:nil];
-}
-
-- (void)subtract {
-    [self _calculate];
-    [self setOperation:CashRegisterCalculatorOperationSubtract];
-    [self setStringAmount:nil];
-}
-
-- (void)calculate {
-    [self _shift];
-    [self _calculate];
-    [self setStringAmount:nil];
 }
 
 - (void)concatenate:(NSString *)value {
@@ -121,7 +80,7 @@
     if (self.stringAmount != nil) {
         [self setStringAmount:[self.stringAmount stringByAppendingString:value]];
     } else {
-        [self _shift];
+        [self shift];
         [self setStringAmount:value];
     }
     
@@ -130,46 +89,20 @@
     [self setXAmount:amount];
 }
 
-# pragma mark - Operations
-
-- (void)_calculate {
-    switch (self.operation) {
-        case CashRegisterCalculatorOperationDivide:
-            [self _divide];
-            break;
-        case CashRegisterCalculatorOperationMultiply:
-            [self _multiply];
-            break;
-        case CashRegisterCalculatorOperationAdd:
-            [self _add];
-            break;
-        case CashRegisterCalculatorOperationSubtract:
-            [self _subtract];
-            break;
-        case CashRegisterCalculatorOperationNone:
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)_shift {
-    [self setYAmount:self.xAmount];
-}
-
-- (void)_clear {
+- (void)clear {
     [self setXAmount:[[NSDecimalNumber alloc] initWithInteger:0]];
     [self setStringAmount:nil];
 }
 
-- (void)_clearAll {
-    [self setOperation:CashRegisterCalculatorOperationNone];
+- (void)clearAll {
+    [self setPreviousOperation:CashRegisterCalculatorOperationNone];
+    [self setCurrentOperation:CashRegisterCalculatorOperationNone];
     [self setXAmount:[[NSDecimalNumber alloc] initWithInteger:0]];
     [self setYAmount:[[NSDecimalNumber alloc] initWithInteger:0]];
     [self setStringAmount:nil];
 }
 
-- (void)_invert {
+- (void)invert {
     NSDecimalNumber *xAmount = self.xAmount;
     NSDecimalNumber *multiplier = [[NSDecimalNumber alloc] initWithInteger:-1];
     NSDecimalNumber *amount = [xAmount decimalNumberByMultiplyingBy:multiplier];
@@ -177,7 +110,7 @@
     [self setXAmount:amount];
 }
 
-- (void)_percent {
+- (void)percent {
     NSDecimalNumber *xAmount = self.xAmount;
     NSDecimalNumber *multiplier = [[NSDecimalNumber alloc] initWithDouble:0.01];
     NSDecimalNumber *amount = [xAmount decimalNumberByMultiplyingBy:multiplier];
@@ -185,40 +118,75 @@
     [self setXAmount:amount];
 }
 
-- (void)_divide {
-    NSDecimalNumber *xAmount = self.xAmount;
-    NSDecimalNumber *yAmount = self.yAmount;
-    NSDecimalNumber *calculatedAmount = [yAmount decimalNumberByDividingBy:xAmount];
-    
-    [self setXAmount:calculatedAmount];
+- (void)divide {
+    if (self.stringAmount != nil) [self calculate:self.currentOperation shift:YES];
+    [self setCurrentOperation:CashRegisterCalculatorOperationDivide];
 }
 
-- (void)_multiply {
-    NSDecimalNumber *xAmount = self.xAmount;
-    NSDecimalNumber *yAmount = self.yAmount;
-    NSDecimalNumber *calculatedAmount = [yAmount decimalNumberByMultiplyingBy:xAmount];
-    
-    [self setXAmount:calculatedAmount];
+- (void)multiply {
+    if (self.stringAmount != nil) [self calculate:self.currentOperation shift:YES];
+    [self setCurrentOperation:CashRegisterCalculatorOperationMultiply];
 }
 
-- (void)_add {
-    NSDecimalNumber *xAmount = self.xAmount;
-    NSDecimalNumber *yAmount = self.yAmount;
-    NSDecimalNumber *calculatedAmount = [yAmount decimalNumberByAdding:xAmount];
-    
-    [self setXAmount:calculatedAmount];
+- (void)add {
+    if (self.stringAmount != nil) [self calculate:self.currentOperation shift:YES];
+    [self setCurrentOperation:CashRegisterCalculatorOperationAdd];
 }
 
-- (void)_subtract {
-    NSDecimalNumber *xAmount = self.xAmount;
-    NSDecimalNumber *yAmount = self.yAmount;
-    NSDecimalNumber *calculatedAmount = [yAmount decimalNumberBySubtracting:xAmount];
-    
-    [self setXAmount:calculatedAmount];
+- (void)subtract {
+    if (self.stringAmount != nil) [self calculate:self.currentOperation shift:YES];
+    [self setCurrentOperation:CashRegisterCalculatorOperationSubtract];
 }
 
-- (void)debug:(NSString *)message {
-    NSLog(@"%@ - X: %@, Y: %@, A: %@", message, @([self.xAmount doubleValue]), @([self.xAmount doubleValue]), @([self.amount doubleValue]));
+- (void)equal {
+    if (self.currentOperation != CashRegisterCalculatorOperationEqual) {
+        [self calculate:self.currentOperation shift:YES];
+        [self setCurrentOperation:CashRegisterCalculatorOperationEqual];
+    } else {
+        [self calculate:self.previousOperation shift:NO];
+    }
+}
+
+- (void)calculate:(CashRegisterCalculatorOperation)operation shift:(BOOL)shift {
+    NSDecimalNumber *xAmount = self.xAmount;
+    NSDecimalNumber *yAmount = self.yAmount;
+    NSDecimalNumber *calculatedAmount;
+    
+    switch (operation) {
+        case CashRegisterCalculatorOperationDivide:
+            calculatedAmount = [yAmount decimalNumberByDividingBy:xAmount];
+            if (shift) [self shift];
+            [self setXAmount:calculatedAmount];
+            break;
+        case CashRegisterCalculatorOperationMultiply:
+            calculatedAmount = [yAmount decimalNumberByMultiplyingBy:xAmount];
+            if (shift) [self shift];
+            [self setXAmount:calculatedAmount];
+            break;
+        case CashRegisterCalculatorOperationAdd:
+            calculatedAmount = [yAmount decimalNumberByAdding:xAmount];
+            if (shift) [self shift];
+            [self setXAmount:calculatedAmount];
+            break;
+        case CashRegisterCalculatorOperationSubtract:
+            calculatedAmount = [yAmount decimalNumberBySubtracting:xAmount];
+            if (shift) [self shift];
+            [self setXAmount:calculatedAmount];
+            break;
+        case CashRegisterCalculatorOperationNone:
+            [self shift];
+            break;
+        default:
+            break;
+    }
+    
+    if (shift) [self setPreviousOperation:self.currentOperation];
+    
+    [self setStringAmount:nil];
+}
+
+- (void)shift {
+    [self setYAmount:self.xAmount];
 }
 
 @end

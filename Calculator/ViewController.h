@@ -13,6 +13,8 @@
 @interface ViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet UILabel *amountLabel;
+@property (nonatomic, weak) IBOutlet UILabel *xLabel;
+@property (nonatomic, weak) IBOutlet UILabel *yLabel;
 @property (nonatomic, weak) IBOutlet UIButton *clearButton;
 
 @property (nonatomic, strong) Calculator *calculator;

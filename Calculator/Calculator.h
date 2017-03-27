@@ -13,7 +13,8 @@ typedef enum : NSUInteger {
     CashRegisterCalculatorOperationDivide,
     CashRegisterCalculatorOperationMultiply,
     CashRegisterCalculatorOperationAdd,
-    CashRegisterCalculatorOperationSubtract
+    CashRegisterCalculatorOperationSubtract,
+    CashRegisterCalculatorOperationEqual,
 } CashRegisterCalculatorOperation;
 
 @interface Calculator : NSObject
@@ -23,18 +24,20 @@ typedef enum : NSUInteger {
 @property (nonatomic, readonly) NSDecimalNumber *amount;
 @property (nonatomic, readonly) NSString *clearLabel;
 @property (nonatomic, strong) NSString *stringAmount;
-@property (nonatomic, assign) CashRegisterCalculatorOperation operation;
+@property (nonatomic, assign) CashRegisterCalculatorOperation previousOperation;
+@property (nonatomic, assign) CashRegisterCalculatorOperation currentOperation;
 
 - (void)input:(NSString *)value;
+- (void)concatenate:(NSString *)value;
 
 - (void)clear;
+- (void)clearAll;
 - (void)invert;
 - (void)percent;
 - (void)divide;
 - (void)multiply;
 - (void)add;
 - (void)subtract;
-- (void)calculate;
-- (void)concatenate:(NSString *)value;
+- (void)calculate:(CashRegisterCalculatorOperation)operation shift:(BOOL)shift;
 
 @end

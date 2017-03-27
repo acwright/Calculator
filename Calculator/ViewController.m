@@ -39,6 +39,8 @@
     [formatter setMaximumFractionDigits:10];
     
     [self.amountLabel setText:[formatter stringFromNumber:amount]];
+    [self.xLabel setText:[NSString stringWithFormat:@"X: %@", [formatter stringFromNumber:[self.calculator xAmount]]]];
+    [self.yLabel setText:[NSString stringWithFormat:@"Y: %@", [formatter stringFromNumber:[self.calculator yAmount]]]];
     [self.clearButton setTitle:[self.calculator clearLabel] forState:UIControlStateNormal];
 }
 
