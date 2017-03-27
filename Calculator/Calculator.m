@@ -154,9 +154,11 @@
     
     switch (operation) {
         case CashRegisterCalculatorOperationDivide:
-            calculatedAmount = [yAmount decimalNumberByDividingBy:xAmount];
-            if (shift) [self shift];
-            [self setXAmount:calculatedAmount];
+            if ([self.xAmount doubleValue] != 0) {
+                calculatedAmount = [yAmount decimalNumberByDividingBy:xAmount];
+                if (shift) [self shift];
+                [self setXAmount:calculatedAmount];
+            }
             break;
         case CashRegisterCalculatorOperationMultiply:
             calculatedAmount = [yAmount decimalNumberByMultiplyingBy:xAmount];
